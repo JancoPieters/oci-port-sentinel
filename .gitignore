@@ -1,0 +1,3 @@
+# OCI credentials — never commit these
+*.pem
+.env
