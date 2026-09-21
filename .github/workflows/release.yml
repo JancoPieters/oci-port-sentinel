@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version tag
+        id: version
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            echo "tag=${{ github.ref_name }}"
+          else
+            echo "tag=v$(jq -r .version plugin.json)"
+          fi >> "$GITHUB_OUTPUT"
+
+      - name: Package plugin
+        run: |
+          mkdir -p dist/oci-port-sentinel
+          cp -r src config lang plugin.json README.md LICENSE dist/oci-port-sentinel/
+          cd dist
+          zip -r "../oci-port-sentinel-${{ steps.version.outputs.tag }}.zip" oci-port-sentinel
+          cd ..
+          ls -l "oci-port-sentinel-${{ steps.version.outputs.tag }}.zip"
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          gh release create "$TAG" "oci-port-sentinel-$TAG.zip" --generate-notes --title "oci-port-sentinel $TAG"
