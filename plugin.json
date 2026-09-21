@@ -2,11 +2,12 @@
     "id": "oci-port-sentinel",
     "name": "OCI Port Sentinel",
     "author": "janco",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Automatically opens server port allocations (TCP+UDP) in Oracle OCI Security Lists when a server is created or its allocations change, and closes them when the server is deleted or ports are released.",
     "category": "plugin",
-    "api_version": 1,
+    "url": "https://github.com/JancoPieters/oci-port-sentinel",
+    "update_url": "https://github.com/JancoPieters/oci-port-sentinel/releases/latest/download/oci-port-sentinel-update.json",
     "namespace": "OciPortSentinel",
     "class": "OciPortSentinel",
-    "composer_packages": {}
+    "composer_packages": null
 }
